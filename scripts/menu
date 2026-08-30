@@ -22,9 +22,9 @@ case "$selection" in
 
     ;;
 "Remove program")
-    # Remove
+    "$HOME"/Menu/scripts/remove
     ;;
 "Update system")
-    #Update
+    "$HOME/.config/waybar/scripts/updates.sh"
     ;;
 esac

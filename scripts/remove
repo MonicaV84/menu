@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+options=(
+    "Pacman"
+    "AUR"
+)
+
+updater=$(printf '%s\n' "${options[@]}" | rofi -dmenu -p "Remove from:")
+
+case "$updater" in
+"Pacman")
+    kitty --class InstallTerminal sh -c '
+pacman -Qnq | /home/moni/.fzf/bin/fzf -m --preview "pacman -Qi {}" | xargs -ro sudo pacman -R
+status=$?
+
+if [ $status -eq 0 ]; then
+    printf "\nRemoval completed successfully.\n"
+else
+    printf "\nRemoval failed.\n"
+fi
+
+printf "Press any key to close..."
+read -n 1
+'
+    ;;
+"AUR")
+
+    kitty --class InstallTerminal sh -c '
+yay -Qm | /home/moni/.fzf/bin/fzf -m --preview "yay -Qi {}" | xargs -ro yay -R
+status=$?
+
+if [ $status -eq 0 ]; then
+    printf "\nRemoval completed successfully.\n"
+else
+    printf "\nRemoval failed.\n"
+fi
+
+printf "Press any key to close..."
+read -n 1
+'
+
+    ;;
+esac

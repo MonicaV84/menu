@@ -1,0 +1,4 @@
+@define-color background rgba(58, 70, 68, 0.8);
+@define-color foreground #D3C6AA;
+@define-color warning #DBBC7F;
+@define-color critical #E67E80;

@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+theme_list=()
+
+for theme in "$HOME"/Menu/Styles/themes/*; do
+    [[ -d "$theme" ]] && theme_list+=("${theme##*/}")
+done
+
+theme=$(printf '%s\n' "${theme_list[@]}" | rofi -dmenu -p "Select theme:")
+
+wall_list=()
+
+for wall in "$HOME"/Menu/Styles/wallpapers/"$theme"/*; do
+    [[ -f "$wall" ]] && wall_list+=("${wall##*/}")
+done
+
+awww img "$HOME"/Menu/Styles/wallpapers/"$theme"/"${wall_list[0]}" --transition-type any
+
+[[ -z "$theme" ]] && exit 0
+
+gsettings set org.gnome.desktop.interface gtk-theme "$theme" &&
+    gsettings set org.gnome.desktop.interface icon-theme "$theme" &&
+    cat "$HOME"/Menu/Styles/themes/"$theme"/Kitty/*.conf >"$HOME"/.config/kitty/current-theme.conf &&
+    cat "$HOME"/Menu/Styles/themes/"$theme"/Hyprland/*.lua >"$HOME"/.config/hypr/colors.lua &&
+    cat "$HOME"/Menu/Styles/themes/"$theme"/Waybar/*.css >"$HOME"/.config/waybar/colors.css &&
+    cat "$HOME"/Menu/Styles/themes/"$theme"/Mako/colors >"$HOME"/.config/mako/colors && makoctl reload &&
+
+    # --NOTE: Requires colorsaver.nvim (https://github.com/swaits/colorsaver.nvim)
+    nvim_theme=$(echo "$theme" | tr '[:upper:]' '[:lower:]')
+nvim_theme_file="$HOME/.local/share/nvim/colorsaver"
+if [ -f "$nvim_theme_file" ]; then
+    echo "$nvim_theme" >"$nvim_theme_file"
+fi
+
+notify-send "You changed your theme" "Theme: $theme"

@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+options=(
+    "Change theme"
+    "Change wallpaper"
+    "Install program"
+    "Remove program"
+    "Update system"
+)
+
+selection=$(printf '%s\n' "${options[@]}" | rofi -dmenu -p "Menu")
+
+case "$selection" in
+"Change theme")
+    "$HOME"/Menu/scripts/style-switcher
+    ;;
+"Change wallpaper")
+    "$HOME"/Menu/scripts/wallpaper-switcher
+    ;;
+"Install program")
+    "$HOME"/Menu/scripts/install
+
+    ;;
+"Remove program")
+    # Remove
+    ;;
+"Update system")
+    #Update
+    ;;
+esac

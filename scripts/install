@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+options=(
+    "Pacman"
+    "AUR"
+)
+
+updater=$(printf '%s\n' "${options[@]}" | rofi -dmenu -p "Update with:")
+
+case "$updater" in
+"Pacman")
+    kitty --class InstallTerminal sh -c '
+pacman -Slq | /home/moni/.fzf/bin/fzf -m --preview "pacman -Si {}" | xargs -ro sudo pacman -S
+status=$?
+
+if [ $status -eq 0 ]; then
+    printf "\nInstallation completed successfully.\n"
+else
+    printf "\nInstallation failed.\n"
+fi
+
+printf "Press any key to close..."
+read -n 1
+'
+    ;;
+"AUR")
+
+    kitty --class InstallTerminal sh -c '
+yay -Pc --aur | /home/moni/.fzf/bin/fzf -m --preview "yay -Si {}" | xargs -ro yay -S
+status=$?
+
+if [ $status -eq 0 ]; then
+    printf "\nInstallation completed successfully.\n"
+else
+    printf "\nInstallation failed.\n"
+fi
+
+printf "Press any key to close..."
+read -n 1
+'
+
+    ;;
+esac

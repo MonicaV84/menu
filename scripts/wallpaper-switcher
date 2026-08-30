@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+rasi_config="$HOME/.local/share/rofi/themes/picker.rasi"
+walls_list=()
+query=$(awww query)
+theme=$(head -n 1 <<<"$query" | awk -F "/" '{print $(NF-1)}')
+for wall in "$HOME"/Menu/Styles/wallpapers/"$theme"/*; do
+    [[ -f "$wall" ]] && wall_list+=("${wall##*/}")
+done
+
+wall=$(for wall in "${wall_list[@]}"; do
+    printf '%s\0icon\x1fthumbnail://%s\n' \
+        "$wall" \
+        "$HOME/Menu/Styles/wallpapers/$theme/$wall"
+done |
+    rofi -dmenu \
+        -p "Select Wallpaper:" \
+        -theme "$rasi_config" \
+        -markup-rows)
+
+selected_wall="$HOME/Menu/Styles/wallpapers/$theme/$wall"
+
+awww img "$selected_wall" --transition-type any

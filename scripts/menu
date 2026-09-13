@@ -1,27 +1,27 @@
 #!/usr/bin/env bash
 
 options=(
-    "Change theme"
-    "Change wallpaper"
-    "Install program"
-    "Remove program"
+    "Themes"
+    "Wallpapers"
+    "Install package"
+    "Remove package"
     "Update system"
 )
 
-selection=$(printf '%s\n' "${options[@]}" | rofi -dmenu -p "Menu")
+selection=$(printf '%s\n' "${options[@]}" | rofi -dmenu -i -p "Menu")
 
 case "$selection" in
-"Change theme")
+"Themes")
     "$HOME"/Menu/scripts/style-switcher
     ;;
-"Change wallpaper")
+"Wallpapers")
     "$HOME"/Menu/scripts/wallpaper-switcher
     ;;
-"Install program")
+"Install package")
     "$HOME"/Menu/scripts/install
 
     ;;
-"Remove program")
+"Remove package")
     "$HOME"/Menu/scripts/remove
     ;;
 "Update system")
